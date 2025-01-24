@@ -1,10 +1,12 @@
-import axios from "axios";
 import { createContext, ReactNode, useContext, useState } from "react";
+import clientAxios from "../config/axios";
 
 type User = {
-    id: string;
-    email: string;
-    name: string;
+    member_id: string;
+    member_email: string;
+    member_name: string;
+    member_nickname: string;
+    avatar: string;
 };
 
 type AuthContextType = {
@@ -12,7 +14,7 @@ type AuthContextType = {
     token: string|null;
     login: (token:string,user:User)=>void;
     logout: ()=>void;
-    checkAuth: ()=>boolean;
+    checkAuth: ()=>Promise<boolean>;
 };
 
 
@@ -34,11 +36,25 @@ export const AuthProvider = ({children}:{children:ReactNode})=>{
         localStorage.removeItem('token')
     }
 
-    const checkAuth = ():boolean=>{
-        axios.get("http://localhost/api/user",{ withCredentials: true })
-            .then(res => console.log("Usuario autenticado:", res.data))
-            .catch(err => console.error("Error:", err));
-    }
+    const checkAuth = async (): Promise<boolean> => {
+        try {
+            const res = await clientAxios.get("/checkSession");
+            
+            if (res.data.code === 200) {
+                const { token_key, user } = res.data.data;
+                login(token_key, user);
+                return true;  // ✅ Retorna true si está autenticado
+            } else {
+                logout();
+                return false; // ✅ Retorna false si no está autenticado
+            }
+        } catch (error) {
+            console.error("Error en checkAuth:", error);
+            logout();
+            return false;
+        }
+    };
+    
 
 
     return (

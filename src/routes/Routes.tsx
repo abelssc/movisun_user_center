@@ -3,6 +3,10 @@ import PrivatesRoute from "./PrivatesRoute";
 import Profile from "../pages/profile/Profile";
 import Password from "../pages/profile/Password";
 import Address from "../pages/profile/Address";
+import Orders from "../pages/orders/Orders";
+import OrderDetail from "../pages/orders/OrderDetail";
+import Refund from "../pages/interests/Refund";
+import Reviews from "../pages/interests/Reviews";
 
 
 const router= createBrowserRouter([
@@ -23,8 +27,24 @@ const router= createBrowserRouter([
                 element: <Password />,
             },
             {
-                path: "my-addresss",
+                path: "my-address",
                 element: <Address />,
+            },
+            {
+                path: "orders",
+                element: <Orders />,
+            },
+            {
+                path: "orders/:id",
+                element: <OrderDetail />,
+            },
+            {
+                path: "reviews",
+                element: <Reviews />,
+            },
+            {
+                path: "refunds",
+                element: <Refund />,
             }
         ],
     },

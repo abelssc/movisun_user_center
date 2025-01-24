@@ -1,13 +1,10 @@
 import { FaRegEdit, FaTrashAlt } from "react-icons/fa";
-import Aside from "../../components/layouts/Aside";
-import Main from "../../components/layouts/Main";
+import Layout from "../../components/layouts/Layout";
 
 
 const Address = () => {
   return (
-    <div className="flex">
-      <Aside />
-      <Main>
+    <Layout>
         <div className="bg-white rounded-lg shadow-lg p-6 min-w-96 w-min">
             <h1 className="text-2xl font-bold mb-4">Mis direcciones</h1>
             <div>
@@ -22,8 +19,7 @@ const Address = () => {
                 <p>San Juan de Lurigancho, Lima</p>
             </div>
         </div>
-      </Main>
-    </div>
+    </Layout>
   );
 };
 
