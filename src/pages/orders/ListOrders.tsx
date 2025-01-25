@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import clientAxios from "../../config/axios";
-import { useAuth } from "../../context/AuthContext";
 import { HiOutlineRefresh } from "react-icons/hi";
 import { convertirTimestamp } from "../../utils/helpers";
 import { TbPigMoney, TbShoppingBagX } from "react-icons/tb";
 import { Link } from "react-router";
 import { stateList } from "../../utils/stateList";
+
 type Order = {
   order_id: string; // id
   order_sn: string; //° orden
@@ -22,29 +20,8 @@ type Order = {
   }[];
 };
 
-const ListOrders = ({state}:{state:string}) => {
-  const { user } = useAuth();
-  const [orders, setOrders] = useState<Order[]>([]);
-
+const ListOrders = ({orders}:{orders:Order[]}) => {
   
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        if (!user) return;
-        const rs = await clientAxios.get("/orders/" + user.member_id,{
-            params:{
-                state
-            }
-        });
-        console.log(rs.data);
-        setOrders(rs.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchOrders();
-  }, [state]);
   return (
     <>
       {orders.map((order: Order) => (
