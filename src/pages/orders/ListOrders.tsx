@@ -1,16 +1,25 @@
-import { HiOutlineRefresh } from "react-icons/hi";
-import { convertirTimestamp } from "../../utils/helpers";
-import { TbPigMoney, TbShoppingBagX } from "react-icons/tb";
-import { Link } from "react-router";
-import { stateList } from "../../utils/stateList";
+// import { useState, useEffect } from 'react';
+import { Link } from 'react-router'; // Usamos useSearchParams para obtener los parámetros de la URL
+// import SelectInput from "../../components/common/SelectInput";
+// import SortableColumn from "../../components/common/SortableColumn";
+// import TextInput from "../../components/common/TextInput";
+// import { debounce } from "../../utils/debounce";
+// import useFilters from '../../hooks/useFilters';
+import { convertirTimestamp, resizeImage } from '../../utils/helpers';
+import { stateList } from '../../utils/stateList';
+import { FaEye } from 'react-icons/fa';
+// import { IoDocumentOutline } from 'react-icons/io5';
+// import { HiDocumentText } from 'react-icons/hi';
+import { IoIosListBox } from 'react-icons/io';
 
 type Order = {
   order_id: string; // id
   order_sn: string; //° orden
   add_time: string; //date
   order_amount: string; //total
+  shipping_fee: string; //envio
   order_state: string; //status
-  pay_sn: string; //n° pago
+  pay_sn: string; // n° pago
   goods: {
     gid: string; //id
     goods_name: string;
@@ -20,116 +29,118 @@ type Order = {
   }[];
 };
 
-const ListOrders = ({orders}:{orders:Order[]}) => {
+const ListOrders = ({ orders }: { orders: Order[] }) => {
+  // const navigate = useNavigate();
   
+  // const [searchParams, setSearchParams] = useSearchParams();
+
+  // const {filters, updateFilters} = useFilters();
+
+
+  // const handleChange = debounce((name: string, value: string) => {
+  //   setQueryParams((prevParams) => {
+  //     const updatedParams = { ...prevParams, [name]: value };
+  //     if (value === '') delete updatedParams[name]; // Elimina el parámetro si el valor es vacío
+  //     return updatedParams;
+  //   });
+
+  //   // Actualiza los parámetros de la URL sin recargar la página
+  //   setSearchParams(queryParams);
+  //   // Navega a la misma ruta con los nuevos parámetros
+  //   navigate({
+  //     pathname: import.meta.env.VITE_BASE_URL + '/orders',
+  //     search: new URLSearchParams(queryParams as Record<string, string>).toString(),
+  //   });
+  // }, 300);
+
   return (
-    <>
-      {orders.map((order: Order) => (
-        <div
-          key={order.order_sn}
-          className="rounded-2xl overflow-hidden border border-gray-200 mb-4"
-        >
-          <div className="grid grid-cols-[210px_150px_150px_1fr] gap-8 p-4 bg-gray-50">
-            <div className="">
-              <p>N° de pedido:</p>
-              <p className="font-semibold">{order.order_sn}</p>
-            </div>
-            <div className="">
-              <p>Fecha del pedido:</p>
-              <p className="font-semibold">
-                {convertirTimestamp(order.add_time)}
-              </p>
-            </div>
-            <div>
-              <p>Total:</p>
-              <p className="font-semibold">S/ {order.order_amount}</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-[210px_150px_150px_1fr] gap-8 p-4 pt-0 items-center text-sm">
-            <div className="grid grid-cols-2 gap-4">
-              {order.goods.map((goods) => (
-                <div key={goods.gid} className="flex gap-4">
-                  <img
-                    className="size-24"
-                    src={
-                      import.meta.env.VITE_PRODUCTS_IMAGE_URL +
-                      "/" +
-                      goods.goods_image
-                    }
-                    alt={goods.goods_name}
-                    title={goods.goods_name}
-                  />
-                </div>
-              ))}
-            </div>
-            <div>
-              <p className="text-gray-600 text-xs">Método de entrega</p>
-              <p className="font-semibold">Despacho a domicilio</p>
-            </div>
-            <div>
-              <div
-                className={`rounded-md px-2 py-0.5 ${
-                    stateList[order.order_state][1]
-                } w-fit mb-2`}
-              >
-                {stateList[order.order_state][0]}
-              </div>
-            </div>
-            <div className="flex gap-2 flex-col self-end ml-auto">
-                {
-                    order.order_state ==='40' && (
-                        <a 
-                            href={import.meta.env.VITE_ROOT_URL
-                                + `/index.php?app=comments&mod=add&order_id=${order.order_id}`
-                            }
-                            target="_blank"
-                            className="border border-gray-400 py-1.5 px-4 rounded-full hover:bg-gray-100 text-center"
-                        >
-                            Escribir una reseña
-                        </a>
-                    )
+    <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
+      <thead className='text-xs text-gray-700 uppercase bg-white dark:bg-gray-800 dark:text-gray-400 border-b-2 border-gray-500'>
+        <tr className='text-nowrap'>
+          <th className='px-3 py-4'></th>
+          <th className='px-3 py-4'></th>
+          <th className='px-3 py-4'>
+            {/* <TextInput
+              placeholder="Project Name"
+              className='w-full text-sm'
+              defaultValue={queryParams.name}
+              onChange={(e) => handleChange('name', e.target.value)}
+            /> */}
+          </th>
+          <th className='px-3 py-4'>
+            {/* <SelectInput
+              className='w-full text-sm'
+              defaultValue={queryParams.status}
+              onChange={(e) => handleChange('status', e.target.value)}
+            >
+              <option value=''>All</option>
+              {
+                Object.keys(PROJECT_STATUS_TEXT_MAP).map(key => (
+                  <option key={key} value={key}>{PROJECT_STATUS_TEXT_MAP[key]}</option>
+                ))
               }
-              {order.order_state === "10" && (
-                <a
-                  href={
-                    import.meta.env.VITE_ROOT_URL +
-                    `/index.php?app=buy&mod=pay&pay_sn=${order.pay_sn}&order_id=${order.order_id}`
+            </SelectInput> */}
+          </th>
+          <th className='px-3 py-4'></th>
+          <th className='px-3 py-4'></th>
+          <th className='px-3 py-4'></th>
+          <th className='px-3 py-4 text-right'></th>
+        </tr>
+      </thead>
+      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400 border-b-2 border-gray-500'>
+        <tr className='text-nowrap'>
+          <th className='px-3 py-4'>#</th>
+          <th className='px-3 py-4'>Productos</th>
+          <th className='px-3 py-4'></th>
+          <th className='px-3 py-4'>Total</th>
+          <th className='px-3 py-4'>Envio</th>
+          <th className='px-3 py-4'>Fecha</th>
+          <th className='px-3 py-4'>Estado</th>
+          <th className='px-3 py-4 text-right'>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          orders.map(order => (
+            <tr key={order.order_id} className='border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'>
+              <td className='px-3 py-4'>{order.order_id}</td>
+              <td className='px-3 py-4'>
+                <div className='grid grid-cols-2 gap-2'>
+                  {
+                    order.goods.map(good => (
+                      <img key={good.gid} src={import.meta.env.VITE_PRODUCTS_IMAGE_URL+"/"+resizeImage(good.goods_image)} title={good.goods_name} className='w-10 h-10 object-cover rounded-lg' />
+                    ))
                   }
-                  target="_blank"
-                  className="border border-gray-400 font-semibold py-1.5 px-4 rounded-full flex gap-1 items-center justify-center hover:bg-gray-100  min-w-48"
-                >
-                  <TbPigMoney /> Pagar Pedido
-                </a>
-              )}
-              <Link to={import.meta.env.VITE_BASE_URL+`/orders/${order.order_id}`} className="border border-gray-400 py-1.5 px-4 rounded-full hover:bg-gray-100 text-center">
-                Ver Detalles
-              </Link>
-              {order.order_state !=='10' && (
-                <a
-                    href={
-                    import.meta.env.VITE_ROOT_URL +
-                    `/index.php?app=buy&mod=buy_again&order_id=${order.order_id}`
-                    }
-                    target="_blank"
-                    className="border border-gray-200 bg-yellow-400 py-1.5 px-4 rounded-full flex gap-1 items-center hover:bg-yellow-300"
-                >
-                    <HiOutlineRefresh /> Comprar nuevamente
-                </a>
-              )}
-              
-            </div>
-          </div>
-        </div>
-      ))}
-      {
-          orders.length === 0 && (
-              <div className="flex items-center justify-center gap-4 flex-col">
-                    <TbShoppingBagX className="text-9xl text-gray-300" />
-                    <span>No encontramos pedidos que cumplan con tu criterio de búsqueda</span>
                 </div>
-            )
-      }
-    </>
+              </td>
+              <td className='px-3 py-4'>
+                <div>
+                  {
+                    order.goods.map(good => (
+                      <p key={good.gid} className='text-sm'>{good.goods_name}</p>
+                    ))
+                  }
+                </div>
+              </td>
+              <td className='px-3 py-4'>S/ {order.order_amount}</td>
+              <td className='px-3 py-4'>S/ {order.shipping_fee}</td>
+              <td className='px-3 py-4'>{convertirTimestamp(order.add_time,false,true)}</td>
+              <td className='px-3 py-4'>
+                <div className='flex items-center gap-2'>
+                  <span className={`size-4 rounded-full inline-block ${stateList[order.order_state][1]}`}></span>
+                  <span className={`text-xs font-semibold uppercase`}>{stateList[order.order_state][0]}</span>
+                </div>
+              </td>
+              <td className='px-3 py-4 text-right'>
+                <Link to={import.meta.env.BASE_URL+`/orders/${order.order_id}`} className='flex items-center gap-2 hover:text-blue-400'><FaEye /> Ver detalles</Link>
+                <button className='flex items-center gap-2 hover:text-blue-400'><IoIosListBox />Imprimir rótulo</button>
+              </td>
+            </tr>
+          ))
+
+        }
+      </tbody>
+    </table>
   );
 };
 

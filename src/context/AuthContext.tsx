@@ -2,11 +2,8 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import clientAxios from "../config/axios";
 
 type User = {
-    member_id: string;
-    member_email: string;
+    vendor_id: string;
     member_name: string;
-    member_nickname: string;
-    avatar: string;
 };
 
 type AuthContextType = {
@@ -38,11 +35,17 @@ export const AuthProvider = ({children}:{children:ReactNode})=>{
 
     const checkAuth = async (): Promise<boolean> => {
         try {
-            const res = await clientAxios.get("/checkSession");
+            const local_token = localStorage.getItem("token");
+            if (!local_token) {
+                logout();
+                return false; // ✅ Retorna false si no está autenticado
+            }
+
+            const {data} = await clientAxios.get("/checkSession");
             
-            if (res.data.code === 200) {
-                const { token_key, user } = res.data.data;
-                login(token_key, user);
+            if (data.code === 200) {
+                const { token, vendor } = data.data;
+                login(token, vendor);
                 return true;  // ✅ Retorna true si está autenticado
             } else {
                 logout();

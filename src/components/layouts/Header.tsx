@@ -28,8 +28,21 @@ const Header = () => {
     fetchCategories();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      const { data } = await clientAxios.delete("/logout");
+      if (data.code === 200) {
+        logout();
+        window.location.href = import.meta.env.VITE_BASE_URL + '/auth/login';
+      }
+    } catch (error) {
+      alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
   return (
-    <div className="w-full bg-white shadow-sm pl-4 pr-8 py-2">
+    <div className="w-full bg-white dark:bg-gray-800 shadow-sm pl-4 pr-8 py-2">
       <div className="flex justify-between items-center">
         <a href={import.meta.env.VITE_ROOT_URL}>
           <img
@@ -46,10 +59,10 @@ const Header = () => {
             {categories?.map((category) => (
               <li
                 key={category.gc_id}
-                className="relative group hover:bg-gray-200 rounded-md"
+                className="relative group rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <a
-                  className="text-gray-800 px-4 py-2 inline-block hover:text-blue-900"
+                  className="text-gray-800 dark:text-gray-100 px-4 py-2 inline-block hover:bg-gray-200 dark:hover:bg-gray-700"
                   href={
                     import.meta.env.VITE_ROOT_URL +
                     "/index.php?app=goodslist&gc_id=" +
@@ -58,11 +71,11 @@ const Header = () => {
                 >
                   {category.gc_name_en}
                 </a>
-                <ul className="absolute left-0 hidden group-hover:block bg-white shadow-md rounded-md pt-2">
+                <ul className="absolute left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-md rounded-md pt-2">
                   {category.child?.map((child) => (
                     <li key={child.gc_id}>
                       <a
-                        className="block px-4 py-2 text-gray-800 hover:bg-blue-100 hover:text-blue-900"
+                        className="block px-4 py-2 text-gray-800 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
                         href={
                           import.meta.env.VITE_ROOT_URL +
                           "/index.php?app=goodslist&gc_id=" +
@@ -80,17 +93,14 @@ const Header = () => {
         </div>
         <div className="flex gap-4 items-center">
           <p>
-            <span className="text-gray-400">Bienvenido,</span>{" "}
-            <span className="font-bold text-blue-900 text-lg">
-              {user?.member_nickname}
+            <span className="text-gray-800 dark:text-gray-100">Bienvenido,</span>{" "}
+            <span className="font-bold text-blue-900 dark:text-blue-300 text-lg">
+              {user?.member_name}
             </span>
           </p>
-          <a
-            href={import.meta.env.VITE_ROOT_URL + "/index.php?app=login&mod=logout"}
-            onClick={logout}
-          >
-            <IoExitOutline className="size-6" />
-          </a>
+          <button onClick={handleLogout}>
+            <IoExitOutline className="text-gray-800 dark:text-gray-100 text-2xl hover:text-gray-500 dark:hover:text-gray-300" />
+          </button>
         </div>
       </div>
     </div>

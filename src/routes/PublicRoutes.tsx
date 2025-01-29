@@ -1,8 +1,9 @@
-import { Navigate, Outlet } from "react-router"
-import { useAuth } from "../context/AuthContext"
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
+import { Navigate, Outlet } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 
-const PrivatesRoute = () => {
+
+const PublicRoutes = () => {
     const {checkAuth,token} = useAuth();
     const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
@@ -18,10 +19,9 @@ const PrivatesRoute = () => {
         verificarSesion();
     }, [token, checkAuth]);
 
-    // Mientras se verifica la sesión, puedes mostrar un loader
     if (isAuthenticated === null) return <h1>Verificando sesión...</h1>;
-
-    return isAuthenticated ? <Outlet /> : <Navigate to={import.meta.env.VITE_BASE_URL+"/auth/login"} />;
+    if(isAuthenticated) return <Navigate to={import.meta.env.VITE_BASE_URL} />;
+    return <Outlet />;
 }
 
-export default PrivatesRoute
+export default PublicRoutes

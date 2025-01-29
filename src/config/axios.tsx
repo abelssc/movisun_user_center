@@ -21,9 +21,9 @@ clientAxios.interceptors.request.use(config => {
 clientAxios.interceptors.response.use(response => response,
     error => {
         //401: Unauthorized - No autorizado - Token invalido o expirado 
-        if (error.response.status === 401) {
+        if (error.response.status === 401 && error.response.config.url !== '/login') {
             localStorage.removeItem('token');
-            window.location.href = import.meta.env.VITE_ROOT_URL+'/index.php?app=login';
+            window.location.href = import.meta.env.VITE_BASE_URL + '/auth/login';
         }
         return Promise.reject(error);
     }

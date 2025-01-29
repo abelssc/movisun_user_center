@@ -1,12 +1,9 @@
 import { createBrowserRouter, redirect, RouterProvider } from "react-router";
 import PrivatesRoute from "./PrivatesRoute";
-import Profile from "../pages/profile/Profile";
-import Password from "../pages/profile/Password";
-import Address from "../pages/profile/Address";
 import Orders from "../pages/orders/Orders";
 import OrderDetail from "../pages/orders/OrderDetail";
-import Refund from "../pages/interests/Refund";
-import Reviews from "../pages/interests/Reviews";
+import PublicRoute from "./PublicRoutes";
+import Login from "../pages/auth/Login";
 
 
 const router= createBrowserRouter([
@@ -16,19 +13,7 @@ const router= createBrowserRouter([
         children: [
             {
                 index: true,
-                loader: () => redirect("profile"),
-            },
-            {
-                path: "profile",
-                element: <Profile />,
-            },
-            {
-                path: "password",
-                element: <Password />,
-            },
-            {
-                path: "my-address",
-                element: <Address />,
+                loader: () => redirect("orders"),
             },
             {
                 path: "orders",
@@ -38,16 +23,18 @@ const router= createBrowserRouter([
                 path: "orders/:id",
                 element: <OrderDetail />,
             },
-            {
-                path: "reviews",
-                element: <Reviews />,
-            },
-            {
-                path: "refunds",
-                element: <Refund />,
-            }
         ],
     },
+    {
+        path: import.meta.env.VITE_BASE_URL+"/auth",
+        element: <PublicRoute />,
+        children: [
+            {
+                path: "login",
+                element: <Login />,
+            }
+        ]
+    }
 ]);
 
 export default function Routes() {
