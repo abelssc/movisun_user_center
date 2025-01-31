@@ -4,6 +4,7 @@ import Orders from "../pages/orders/Orders";
 import OrderDetail from "../pages/orders/OrderDetail";
 import PublicRoute from "./PublicRoutes";
 import Login from "../pages/auth/Login";
+import { OrderProvider } from "../context/OrderContext";
 
 
 const router= createBrowserRouter([
@@ -21,7 +22,10 @@ const router= createBrowserRouter([
             },
             {
                 path: "orders/:id",
-                element: <OrderDetail />,
+                element: 
+                <OrderProvider>
+                    <OrderDetail />
+                </OrderProvider>,
             },
         ],
     },

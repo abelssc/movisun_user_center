@@ -52,7 +52,7 @@ const Orders = () => {
   return (
     <Layout>
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 min-w-96 max-w-screen-2xl mx-auto">
-        <h1 className="text-2xl font-bold mb-8 text-gray-700 dark:text-gray-50">Pedidos</h1>
+        {/* <h1 className="text-2xl font-bold mb-8 text-gray-700 dark:text-gray-50">Pedidos</h1> */}
         <ul className="flex gap-4 mb-6 justify-between font-medium max-w-screen-lg mx-auto">
           <li>
             <Link to="?page=1&state=all" className={filters.state === "all" ? "text-gray-700 dark:text-gray-50" : "text-gray-500 dark:text-gray-400"}>
@@ -60,10 +60,21 @@ const Orders = () => {
             </Link>
           </li>
           <li>
+            <Link to="?page=1&state=20" className={filters.state === "20" ? "text-gray-700 dark:text-gray-50" : "text-gray-500 dark:text-gray-400"}>
+              Por Confirmar
+            </Link>
+          </li>
+          <li>
+            <Link to="?page=1&state=25" className={filters.state === "25" ? "text-gray-700 dark:text-gray-50" : "text-gray-500 dark:text-gray-400"}>
+              Pedidos a Enviar
+            </Link>
+          </li>
+          <li>
             <Link to="?page=1&state=30" className={filters.state === "30" ? "text-gray-700 dark:text-gray-50" : "text-gray-500 dark:text-gray-400"}>
               Pedidos en Curso
             </Link>
           </li>
+          
           <li>
             <Link to="?page=1&state=40" className={filters.state === "40" ? "text-gray-700 dark:text-gray-50" : "text-gray-500 dark:text-gray-400"}>
               Pedidos Entregados
