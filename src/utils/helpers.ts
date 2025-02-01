@@ -24,6 +24,16 @@ export function convertirTimestamp(
     return fechaUTC.toLocaleDateString('es-PE', opciones);
 }
 
+export function toHumanDate(fechaISO:string):string{
+    const fecha = new Date(fechaISO);
+    
+    // Opciones para formatear la fecha en español
+    const opciones: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
+    
+    // Convertir a lectura humana
+    return fecha.toLocaleDateString('es-ES', opciones);
+}
+
 export function debounce<T extends (...args: any[]) => void>(func: T, delay: number) {
     let timeout: ReturnType<typeof setTimeout>;
   

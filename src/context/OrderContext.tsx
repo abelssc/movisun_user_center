@@ -69,7 +69,7 @@ type Order = {
     };
 };
 
-type Step = 0 | 10 | 20 | 25 | 30 | 40;
+type Step = -10 | 0 | 10 | 20 | 25 | 30 | 40;
 
 const OrderContext = createContext<OrderContext | null>(null);
 

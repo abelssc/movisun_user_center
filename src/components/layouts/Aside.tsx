@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 const Aside = () => {
   const base_url:string=import.meta.env.VITE_BASE_URL;
   return (
-    <div className="flex flex-col gap-4 p-4 sticky top-0 h-fit">
+    <div className="hidden lg:flex flex-col gap-4 p-4 sticky top-0 h-fit">
       <div className="flex flex-col gap-2">
         <NavLink
           className={({ isActive }) =>

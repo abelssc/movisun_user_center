@@ -54,7 +54,7 @@ const Header = () => {
             alt="logo"
           />
         </a>
-        <div>
+        <div className="hidden lg:block">
           <ul className="flex gap-4">
             {categories?.map((category) => (
               <li

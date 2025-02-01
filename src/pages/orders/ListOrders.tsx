@@ -105,7 +105,7 @@ const ListOrders = ({ orders }: { orders: Order[] }) => {
             <tr key={order.order_id} className='border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700'>
               <td className='px-3 py-4'>{order.order_id}</td>
               <td className='px-3 py-4'>
-                <div className='grid grid-cols-2 gap-2'>
+                <div className='grid grid-cols-[40px_40px] gap-2'>
                   {
                     order.goods.map(good => (
                       <img key={good.gid} src={import.meta.env.VITE_PRODUCTS_IMAGE_URL+"/"+resizeImage(good.goods_image)} title={good.goods_name} className='w-10 h-10 object-cover rounded-lg' />

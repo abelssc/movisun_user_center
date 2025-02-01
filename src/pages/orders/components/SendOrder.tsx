@@ -3,6 +3,8 @@ import { useOrder } from "../../../context/OrderContext";
 import clientAxios from "../../../config/axios";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import { toast } from "react-toastify";
+import { FaWhatsapp } from "react-icons/fa";
+import { toHumanDate } from "../../../utils/helpers";
 
 type Order = {
   shipping_date: string;
@@ -83,6 +85,28 @@ const SendOrder = () => {
       }
     );
   };
+  console.log(formData.shipping_date);
+  
+
+  const sendMsgToWhatsapp = () => {
+    if (!order || !order.send_order) return;
+
+    const message = `
+    🚀*¡Tu pedido está en camino!*🚀
+
+    🛍️ *Pedido N°:* ${order.order_sn}
+    📅 *Fecha estimada de entrega:* ${toHumanDate(order.send_order.shipping_date)}
+
+    📦 Sigue el estado de tu pedido en tiempo real aquí:
+    🔗 [www.movisunshop.com]
+
+    ¡Gracias por tu compra! Si tienes alguna consulta, estamos aquí para ayudarte.`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const url="https://web.whatsapp.com/send/?phone=51995765034&text="+encodedMessage;
+    window.open(url, "_blank");
+};
+
 
   return (
     <>
@@ -222,13 +246,24 @@ const SendOrder = () => {
               }
             </button>
           ) : (
-            <button
+           <div className="flex justify-between">
+             <button
               type="button"
               onClick={() => setCurrentStep(40)}
               className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:scale-110 transition-all duration-200"
             >
               <GrFormNextLink size={24} />
             </button>
+            <button
+              type="button"
+              onClick={()=>sendMsgToWhatsapp()}
+              className="w-12 h-12 flex items-center justify-center rounded-full bg-green-600 text-white shadow-lg hover:bg-green-700 hover:scale-110 transition-all duration-200"
+              title="Enviar Mensaje de envio al cliente"
+            >
+              <FaWhatsapp size={24}/>
+            </button>
+           
+           </div>
           )}
         </div>
       </form>

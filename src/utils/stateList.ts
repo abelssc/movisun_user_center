@@ -1,4 +1,5 @@
 export const stateList: { [key: string]: [string, string] } = {
+    "-10": ["Pedido Cancelado","bg-red-300"],
     "0": ["Cancelado", "bg-gray-300"],
     "10": ["Pendiente de Pago", "bg-red-300"], //pendiente de pago
     "20": ["En espera de confirmación", "bg-orange-300"], //recibido
