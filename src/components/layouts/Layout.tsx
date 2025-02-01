@@ -1,6 +1,5 @@
 import { ReactNode } from "react"
 import Aside from "./Aside"
-import Footer from "./Footer"
 import Main from "./Main"
 import Header from "./Header"
 import { ToastContainer } from "react-toastify"
@@ -14,7 +13,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
             <Aside />
             <Main>{children}</Main>
         </div>
-        {/* <Footer /> */}
       </div>
     <ToastContainer />
     </>
